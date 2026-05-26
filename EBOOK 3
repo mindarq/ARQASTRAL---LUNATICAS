@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ebook 3 · Prácticas de Sanación</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf5f0;--warm:#2c1810;--burnt:#9b4a1e;--amber:#d4874a;--gold:#e8c37a;--blush:#f2d5c4;--sage:#7a9e7e;--cream:#fefcf9;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#1c0f08;font-family:'Jost',sans-serif;display:flex;flex-direction:column;align-items:center;}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--burnt),var(--gold));transition:width .5s ease;z-index:100;}
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:rgba(44,24,16,0.97);backdrop-filter:blur(12px);border:1px solid rgba(212,135,74,0.3);border-radius:50px;padding:10px 20px;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.nav-btn{background:none;border:1px solid rgba(232,195,122,0.4);color:var(--gold);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.nav-btn:hover{background:rgba(232,195,122,0.12);}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+.nav-pages{font-family:'Bodoni Moda',serif;font-size:13px;color:rgba(255,255,255,.4);min-width:70px;text-align:center;letter-spacing:2px;}
+
+.page{display:none;width:820px;min-height:100vh;animation:fadeIn .5s ease;}
+.page.active{display:flex;flex-direction:column;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* COVER */
+.cover{background:var(--warm);position:relative;overflow:hidden;}
+.cover-top{background:linear-gradient(140deg,#9b4a1e 0%,#6a2a10 50%,#2c1810 100%);padding:90px 70px 120px;position:relative;clip-path:polygon(0 0,100% 0,100% 88%,0 100%);}
+.cover-circles{position:absolute;top:30px;right:50px;}
+.cc{position:absolute;border-radius:50%;border:1px solid rgba(232,195,122,0.25);}
+.ebook-label{font-size:10px;letter-spacing:5px;color:var(--amber);text-transform:uppercase;margin-bottom:44px;position:relative;z-index:1;}
+.cover-title{font-family:'Bodoni Moda',serif;font-size:64px;color:#fff;line-height:1.05;position:relative;z-index:1;}
+.cover-title em{color:var(--gold);font-style:italic;display:block;}
+.cover-bottom{padding:40px 70px 70px;display:flex;flex-direction:column;gap:20px;}
+.cover-desc{font-size:16px;color:rgba(255,255,255,.55);line-height:1.7;max-width:420px;}
+.ptags{display:flex;gap:10px;flex-wrap:wrap;}
+.ptag{background:rgba(232,195,122,0.12);border:1px solid rgba(232,195,122,0.3);color:var(--gold);padding:6px 14px;border-radius:4px;font-size:12px;letter-spacing:1px;}
+.cover-brand{font-size:11px;color:rgba(255,255,255,.18);letter-spacing:4px;text-transform:uppercase;}
+
+/* INNER */
+.inner{background:var(--bg);padding:65px 75px 120px;position:relative;}
+.inner::before{content:'';position:absolute;top:0;right:0;width:6px;height:100%;background:linear-gradient(180deg,var(--burnt),var(--gold));}
+
+.eye{font-size:10px;letter-spacing:5px;color:var(--burnt);text-transform:uppercase;margin-bottom:8px;}
+.h1{font-family:'Bodoni Moda',serif;font-size:38px;color:var(--warm);line-height:1.15;margin-bottom:24px;}
+.h1 em{font-style:italic;color:var(--burnt);}
+.bp{font-size:17px;line-height:1.9;color:#5a3a28;margin-bottom:18px;}
+
+.mantra-box{background:var(--warm);color:#fff;border-radius:12px;padding:26px 32px;margin:18px 0;}
+.mantra-lbl{font-size:10px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
+.mantra-text{font-family:'Bodoni Moda',serif;font-size:21px;font-style:italic;line-height:1.5;color:rgba(255,255,255,.92);}
+
+.val-row{display:flex;gap:10px;margin:6px 0 18px;flex-wrap:wrap;}
+.val-chip{background:var(--blush);padding:9px 16px;border-radius:8px;font-size:13px;color:var(--warm);font-weight:500;letter-spacing:1px;}
+.val-lbl{font-size:10px;color:var(--burnt);text-transform:uppercase;letter-spacing:3px;margin-bottom:6px;}
+
+.no-box{background:#fff8f5;border:1px solid rgba(155,74,30,0.12);border-radius:12px;padding:20px 24px;margin:16px 0;}
+.no-box h4{font-size:10px;letter-spacing:4px;color:var(--burnt);text-transform:uppercase;margin-bottom:12px;}
+.no-list{list-style:none;}
+.no-list li{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.6;color:#6a4030;padding:5px 0;border-bottom:1px solid rgba(155,74,30,0.06);}
+.no-list li:last-child{border:none;}
+.no-list li::before{content:'✗';color:var(--burnt);flex-shrink:0;font-weight:700;}
+
+.prac-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.prac-card{background:#fff;border-radius:10px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 2px 8px rgba(44,24,16,0.05);}
+.prac-icon{font-size:20px;flex-shrink:0;}
+.prac-text{font-size:13.5px;line-height:1.6;color:#5a3a28;}
+
+.prac-list{list-style:none;margin:10px 0;}
+.prac-list li{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.65;color:#5a3a28;padding:9px 0;border-bottom:1px solid rgba(155,74,30,0.08);}
+.prac-list li:last-child{border:none;}
+.check-circle{width:20px;height:20px;border-radius:50%;background:#e8f0e8;color:var(--sage);font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-weight:700;}
+
+/* Q section */
+.q-section{background:var(--warm);border-radius:18px;padding:32px 36px;margin:22px 0;}
+.q-title{font-size:10px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.q-title::after{content:'';flex:1;height:1px;background:rgba(232,195,122,0.2);}
+.question{margin-bottom:24px;}
+.q-label{font-family:'Bodoni Moda',serif;font-size:17px;color:#fff;line-height:1.5;margin-bottom:12px;font-style:italic;}
+.choices{display:flex;flex-direction:column;gap:7px;}
+.choice-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);padding:11px 17px;border-radius:10px;cursor:pointer;text-align:left;font-family:'Jost',sans-serif;font-size:14.5px;transition:all .2s;}
+.choice-btn:hover{background:rgba(212,135,74,0.18);border-color:rgba(212,135,74,0.4);}
+.choice-btn.selected{background:rgba(212,135,74,0.25);border-color:var(--amber);color:#fff;}
+.q-textarea{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:13px 17px;color:#fff;font-family:'Jost',sans-serif;font-size:15px;line-height:1.7;resize:vertical;min-height:88px;transition:border-color .2s;}
+.q-textarea:focus{outline:none;border-color:rgba(232,195,122,0.4);}
+.q-textarea::placeholder{color:rgba(255,255,255,.22);}
+.feedback-box{display:none;background:rgba(232,195,122,0.1);border:1px solid rgba(232,195,122,0.22);border-radius:10px;padding:17px 21px;margin-top:12px;}
+.feedback-box.show{display:block;animation:fadeIn .4s ease;}
+.feedback-box p{font-size:14.5px;line-height:1.7;color:rgba(255,255,255,.82);font-style:italic;}
+.fb-icon{font-size:20px;margin-bottom:6px;display:block;}
+.save-btn{background:linear-gradient(135deg,var(--burnt),#6a2a10);color:#fff;border:none;border-radius:10px;padding:11px 22px;cursor:pointer;font-family:'Jost',sans-serif;font-size:15px;margin-top:14px;transition:opacity .2s;letter-spacing:1px;}
+.save-btn:hover{opacity:.85;}
+.save-btn.saved{background:linear-gradient(135deg,#4a8a60,#2a6040);}
+
+.rec-box{background:#fff;border:1px solid rgba(155,74,30,0.12);border-radius:14px;padding:24px 28px;margin:20px 0;border-left:4px solid var(--burnt);}
+.rec-box h4{font-family:'Bodoni Moda',serif;font-size:17px;color:var(--burnt);margin-bottom:12px;}
+.rec-box ul{list-style:none;}
+.rec-box ul li{font-size:14.5px;line-height:1.7;color:#5a3a28;padding:6px 0;border-bottom:1px solid rgba(155,74,30,0.07);display:flex;gap:10px;}
+.rec-box ul li:last-child{border:none;}
+.rec-box ul li::before{content:'✦';color:var(--amber);font-size:11px;flex-shrink:0;margin-top:4px;}
+
+/* CLOSING */
+.closing{background:var(--warm);align-items:center;justify-content:center;text-align:center;padding:70px;}
+.closing h2{font-family:'Bodoni Moda',serif;font-size:44px;color:#fff;margin:16px 0;line-height:1.2;}
+.closing h2 em{color:var(--gold);font-style:italic;}
+.closing p{font-size:17px;color:rgba(255,255,255,.6);line-height:1.85;max-width:460px;margin:0 auto 20px;}
+.final-aff{font-family:'Bodoni Moda',serif;font-size:22px;font-style:italic;color:var(--gold);padding:24px 32px;border:1px solid rgba(232,195,122,0.25);border-radius:14px;max-width:500px;margin:0 auto;line-height:1.5;}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- P1 COVER -->
+<div class="page cover active" id="p1">
+  <div class="cover-top">
+    <div class="cover-circles">
+      <div class="cc" style="width:100px;height:100px;top:0;right:0;"></div>
+      <div class="cc" style="width:160px;height:160px;top:30px;right:30px;opacity:.5;"></div>
+      <div class="cc" style="width:220px;height:220px;top:60px;right:60px;opacity:.25;"></div>
+    </div>
+    <div class="ebook-label">✦ Ebook 3 · Sanando con Papá · Para Lunáticas</div>
+    <div class="cover-title">Prácticas de<br><em>Sanación</em></div>
+  </div>
+  <div class="cover-bottom">
+    <p class="cover-desc">Para cada herida hay un camino de regreso a vos misma. Estas son las prácticas concretas para recorrerlo.</p>
+    <div class="ptags"><span class="ptag">Mantras</span><span class="ptag">Valores</span><span class="ptag">Límites</span><span class="ptag">Ejercicios</span><span class="ptag">Compromisos</span></div>
+    <div class="cover-brand">✦ Sanarte · Tu espacio de sanación</div>
+  </div>
+</div>
+
+<!-- P2: Rechazo -->
+<div class="page inner" id="p2">
+  <div class="eye">Herida 1 · Sanación</div>
+  <div class="h1">Sanación del <em>Rechazo</em></div>
+  <div class="mantra-box">
+    <div class="mantra-lbl">✦ Conectate con estas ideas</div>
+    <p class="mantra-text">"Sé enfrentar mis miedos. Soy muy valiosa y tengo derecho a existir. Sé dar y recibir el amor de los otros."</p>
+  </div>
+  <div class="val-lbl">Valores atemporales a desarrollar</div>
+  <div class="val-row"><span class="val-chip">🌸 Ternura</span><span class="val-chip">⚡ Valentía</span></div>
+  <div class="no-box">
+    <h4>No te podés permitir</h4>
+    <ul class="no-list">
+      <li>Considerarte una nulidad o incapaz de marcar diferencia</li>
+      <li>Huir de las situaciones en lugar de enfrentarlas</li>
+      <li>Seguir pensando que todo lo que te pasa es culpa de los demás</li>
+    </ul>
+  </div>
+  <div class="prac-grid">
+    <div class="prac-card"><span class="prac-icon">🌟</span><span class="prac-text">Reconocer tus capacidades y valorarlas en voz alta cada día</span></div>
+    <div class="prac-card"><span class="prac-icon">📋</span><span class="prac-text">Hacer una lista de las 3 cosas buenas del día antes de dormir</span></div>
+    <div class="prac-card"><span class="prac-icon">🤝</span><span class="prac-text">Tener vida social activa, conectar con personas nuevas</span></div>
+    <div class="prac-card"><span class="prac-icon">🗣️</span><span class="prac-text">Dar tu opinión en conversaciones aunque cueste hacerlo</span></div>
+  </div>
+
+  <div class="q-section">
+    <div class="q-title">✦ Preguntas de integración</div>
+    <div class="question">
+      <div class="q-label">1. ¿En qué situación concreta de tu vida actual se activa más tu herida de rechazo?</div>
+      <textarea class="q-textarea" id="q2_1" placeholder="En el trabajo cuando mi jefa me ignora... En mis amistades cuando no me invitan... En la pareja cuando él está distraído..." oninput="autoSave('q2_1',this.value)"></textarea>
+    </div>
+    <div class="question">
+      <div class="q-label">2. ¿Qué práctica de las mencionadas arriba podés comprometerte a hacer por 7 días seguidos?</div>
+      <div class="choices" id="q2_2">
+        <button class="choice-btn" onclick="selectChoice(this,'q2_2','lista buenas')">La lista de las 3 cosas buenas del día</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q2_2','opinion')">Dar mi opinión aunque me cueste</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q2_2','capacidades')">Nombrar en voz alta algo que hago bien cada mañana</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q2_2','social')">Conectarme con alguien nuevo esta semana</button>
+      </div>
+      <div class="feedback-box" id="fb_q2_2"><span class="fb-icon">✨</span><p id="fb_q2_2_text"></p></div>
+    </div>
+  </div>
+  <div class="rec-box">
+    <h4>✦ Recomendación profunda</h4>
+    <ul>
+      <li>Hacer el ejercicio del espejo durante 5 minutos al día: mirarte a los ojos y repetir "tengo derecho a existir exactamente como soy". Al principio habrá resistencia — eso es exactamente la herida hablando.</li>
+      <li>Cada vez que notes la voz crítica interna, nombrala en tercera persona: "ahí está la herida de rechazo hablando de nuevo". Ese distanciamiento reduce su poder inmediatamente.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- P3: Abandono + Humillación -->
+<div class="page inner" id="p3">
+  <div class="eye">Heridas 2 y 3 · Sanación</div>
+  <div class="h1">Abandono y <em>Humillación</em></div>
+
+  <div class="mantra-box" style="background:#1a3a4a;">
+    <div class="mantra-lbl">✦ Mantra para el Abandono</div>
+    <p class="mantra-text">"Sé cuidar de mí misma y es un placer contar conmigo. Tengo ideales propios, soy poderosa para alcanzar mis sueños."</p>
+  </div>
+  <div class="val-lbl">Valores del Abandono</div>
+  <div class="val-row"><span class="val-chip">🙏 Agradecimiento</span><span class="val-chip">🦋 Independencia</span></div>
+  <ul class="prac-list" style="margin-bottom:20px;">
+    <li><span class="check-circle">✓</span>Buscar independencia emocional, económica y espiritual</li>
+    <li><span class="check-circle">✓</span>Poner límites, decir que no y aceptar el no de los demás</li>
+    <li><span class="check-circle">✓</span>Generar espacios de silencio y meditación diarios</li>
+    <li><span class="check-circle">✓</span>Hacer cosas sin buscar aprobación siempre</li>
+  </ul>
+
+  <div style="height:1px;background:rgba(155,74,30,0.12);margin:20px 0;"></div>
+
+  <div class="mantra-box" style="background:#4a2010;">
+    <div class="mantra-lbl">✦ Mantra para la Humillación</div>
+    <p class="mantra-text">"Me acepto a mí misma y disfruto la libertad de ser yo misma plenamente."</p>
+  </div>
+  <div class="val-lbl">Valores de la Humillación</div>
+  <div class="val-row"><span class="val-chip">🕊️ Honestidad</span><span class="val-chip">🌺 Libertad</span></div>
+  <ul class="prac-list">
+    <li><span class="check-circle">✓</span>Prestar atención a mis propias necesidades sin culpa</li>
+    <li><span class="check-circle">✓</span>Permitirme ser vulnerable y llorar cuando lo necesito</li>
+    <li><span class="check-circle">✓</span>Correr, bailar, mover el cuerpo para liberar la energía retenida</li>
+    <li><span class="check-circle">✓</span>No controlar, confiar, permitir que las cosas fluyan</li>
+  </ul>
+
+  <div class="q-section">
+    <div class="q-title">✦ Preguntas de integración</div>
+    <div class="question">
+      <div class="q-label">3. ¿Cuál de estas dos heridas sentís que necesita más atención en vos ahora mismo?</div>
+      <div class="choices" id="q3_1">
+        <button class="choice-btn" onclick="selectChoice(this,'q3_1','abandono')">🌊 El abandono — mi miedo a que me dejen</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q3_1','humillacion')">🔥 La humillación — mi vergüenza y autocrítica</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q3_1','ambas igual')">Las dos con la misma intensidad</button>
+      </div>
+      <div class="feedback-box" id="fb_q3_1"><span class="fb-icon">💜</span><p id="fb_q3_1_text"></p></div>
+    </div>
+    <div class="question">
+      <div class="q-label">4. ¿Qué significa para vos la independencia emocional? ¿Cómo sería tu vida si la tuvieras plenamente?</div>
+      <textarea class="q-textarea" id="q3_2" placeholder="Imaginá tu vida con independencia emocional real. ¿Qué cambiaría? ¿Qué elegirías diferente?" oninput="autoSave('q3_2',this.value)"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- P4: Traición + Injusticia -->
+<div class="page inner" id="p4">
+  <div class="eye">Heridas 4 y 5 · Sanación</div>
+  <div class="h1">Traición e <em>Injusticia</em></div>
+
+  <div class="mantra-box" style="background:#3a2a10;">
+    <div class="mantra-lbl">✦ Mantra para la Traición</div>
+    <p class="mantra-text">"Soy paciente. Sé confiar en los otros y estoy en paz con la vida."</p>
+  </div>
+  <div class="val-lbl">Valores de la Traición</div>
+  <div class="val-row"><span class="val-chip">🕊️ Confianza</span><span class="val-chip">⏳ Paciencia</span><span class="val-chip">🤍 Tolerancia</span></div>
+  <ul class="prac-list" style="margin-bottom:20px;">
+    <li><span class="check-circle">✓</span>Ser honesta y limpia en mis comunicaciones</li>
+    <li><span class="check-circle">✓</span>Pedir claramente lo que quiero sin manipular ni seducir</li>
+    <li><span class="check-circle">✓</span>Confiar en los demás dando pequeños pasos graduales</li>
+    <li><span class="check-circle">✓</span>Saber cortar, terminar y cerrar lo que no sirve</li>
+  </ul>
+
+  <div style="height:1px;background:rgba(155,74,30,0.12);margin:20px 0;"></div>
+
+  <div class="mantra-box">
+    <div class="mantra-lbl">✦ Mantra para la Injusticia</div>
+    <p class="mantra-text">"Soy compasiva conmigo misma. Me permito ser imperfecta y eso está bien."</p>
+  </div>
+  <div class="val-lbl">Valores de la Injusticia</div>
+  <div class="val-row"><span class="val-chip">💗 Compasión</span><span class="val-chip">🌿 Flexibilidad</span></div>
+  <ul class="prac-list">
+    <li><span class="check-circle">✓</span>Mantener postura corporal relajada: mandíbula, espalda, hombros</li>
+    <li><span class="check-circle">✓</span>Disfrutar los sentidos sin culpa: el sol, la comida, el descanso</li>
+    <li><span class="check-circle">✓</span>Aprender a recibir sin pensar que estás en deuda</li>
+    <li><span class="check-circle">✓</span>Valorar tu sensibilidad y no esconderla más</li>
+  </ul>
+
+  <div class="q-section">
+    <div class="q-title">✦ Preguntas de integración</div>
+    <div class="question">
+      <div class="q-label">5. En una escala del 1 al 5, ¿cuánto confiás en los demás genuinamente?</div>
+      <div class="choices" id="q4_1">
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','1')">1 — No confío casi en nadie</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','2')">2 — Confío muy poco y con muchos resguardos</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','3')">3 — Confío en algunas personas elegidas</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','4')">4 — En general confío, aunque me cuida</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','5')">5 — Confío abiertamente y doy lugar al otro</button>
+      </div>
+      <div class="feedback-box" id="fb_q4_1"><span class="fb-icon">🌱</span><p id="fb_q4_1_text"></p></div>
+    </div>
+    <div class="question">
+      <div class="q-label">6. ¿Cuál es la exigencia más cruel que te hacés a vos misma? ¿Podés nombrarla?</div>
+      <textarea class="q-textarea" id="q4_2" placeholder="Ej: Nunca está bien lo que hago. Tengo que ser perfecta para que me quieran. No merezco descansar si no terminé todo..." oninput="autoSave('q4_2',this.value)"></textarea>
+    </div>
+  </div>
+  <div class="rec-box">
+    <h4>✦ Recomendación profunda</h4>
+    <ul>
+      <li>Para la herida de traición: practicar hacer pequeñas promesas a vos misma y cumplirlas. La confianza en los demás empieza por ser confiable contigo misma.</li>
+      <li>Para la herida de injusticia: buscar activamente situaciones donde recibir sin reciprocidad inmediata. Que alguien te pague el café, te abra la puerta, te regale algo. Notar qué incomodidad surge y respirarla.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- P5: Síntesis + cierre -->
+<div class="page closing" id="p5">
+  <div style="width:100%;max-width:580px;">
+    <div style="font-size:48px;margin-bottom:20px;text-align:center;">🌿</div>
+    <div style="font-size:10px;letter-spacing:5px;color:var(--amber);text-transform:uppercase;margin-bottom:12px;text-align:center;">Síntesis y compromiso</div>
+    <h2>Tu práctica<br><em>de por vida</em></h2>
+    <p>Sanar no es un destino. Es una práctica diaria de volverte a elegir, de tratarte con el amor que no recibiste, de construir desde adentro lo que buscabas afuera.</p>
+
+    <div class="q-section" style="text-align:left;">
+      <div class="q-title">✦ Mi plan de sanación personal</div>
+      <div class="question">
+        <div class="q-label">7. Mirando todas las prácticas de este ebook, ¿cuál es la que más resistencia te genera? (esa suele ser la más importante)</div>
+        <textarea class="q-textarea" id="q5_1" placeholder="La que más me cuesta es..." oninput="autoSave('q5_1',this.value)"></textarea>
+      </div>
+      <div class="question">
+        <div class="q-label">8. ¿Qué práctica universal comenzás HOY?</div>
+        <div class="choices" id="q5_2">
+          <button class="choice-btn" onclick="selectChoice(this,'q5_2','espejo')">El ejercicio del espejo: mirarme con amor cada mañana</button>
+          <button class="choice-btn" onclick="selectChoice(this,'q5_2','mantra')">Repetir el mantra de mi herida principal por 21 días</button>
+          <button class="choice-btn" onclick="selectChoice(this,'q5_2','diario')">Llevar mi diario emocional honesto y sin juicio</button>
+          <button class="choice-btn" onclick="selectChoice(this,'q5_2','cuerpo')">Mover el cuerpo (bailar, caminar, correr) 3 veces por semana</button>
+        </div>
+        <div class="feedback-box" id="fb_q5_2"><span class="fb-icon">⭐</span><p id="fb_q5_2_text"></p></div>
+        <button class="save-btn" onclick="saveAll(this)">✦ Guardar mi compromiso de sanación</button>
+      </div>
+    </div>
+
+    <div class="final-aff">"Este es un trabajo de por vida. Poco a poco, sin prisa. Cada pequeño paso cuenta."</div>
+    <p style="text-align:center;font-size:11px;color:rgba(255,255,255,.18);letter-spacing:4px;text-transform:uppercase;margin-top:20px;">✦ Sanarte · Tu espacio de sanación</p>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>‹</button>
+  <span class="nav-pages" id="navPages">1 / 5</span>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">›</button>
+</div>
+
+<script>
+const totalPages=5; let current=1; const saved={};
+const feedbacks={
+  q2_2:{
+    'lista buenas':'Perfecto. La lista de las 3 cosas buenas activa gradualmente el circuito de la gratitud en el cerebro. Ponéla en el celular como recordatorio a la noche.',
+    opinion:'Dar tu opinión cuando la herida de rechazo está activa requiere un coraje enorme. Empezá por opiniones pequeñas y de bajo riesgo. La voz se va fortaleciendo.',
+    capacidades:'Nombrarlo en voz alta es mucho más poderoso que pensarlo. Escucharte decirlo cambia la experiencia. Hacélo aunque al principio suene falso.',
+    social:'Conectar con alguien nuevo desafía directamente la tendencia huidiza. No tiene que ser algo grande: una conversación, un mensaje, una sonrisa genuina.'
+  },
+  q3_1:{
+    abandono:'El abandono es quizás la herida más dolorosa porque toca la base de la supervivencia. El trabajo más importante: aprender a estar con vos misma sin que eso sea una amenaza existencial.',
+    humillacion:'La humillación es una herida muy corporal. Se guarda en la postura, en el peso, en la tensión crónica. Trabajar desde el cuerpo hacia adentro (movimiento, respiración) es muy efectivo.',
+    'ambas igual':'Que las dos estén activas con la misma intensidad indica que el trabajo interior es profundo y necesario. No intentes hacer todo a la vez: elegí una práctica de cada una y alternálas.'
+  },
+  q4_1:{
+    '1':'Vivir sin poder confiar es agotador. Es llevar una armadura pesada todos los días. El trabajo no es decidir "voy a confiar más" sino ir sanando las experiencias de traición que generaron esa armadura.',
+    '2':'Hay herida de traición activa. La hipervigilancia que genera el nivel 2 es costosa en energía. Preguntate: ¿quién en mi vida actual ha demostrado ser confiable aunque yo no lo registre plenamente?',
+    '3':'Un nivel sano de selectividad. El trabajo es expandir gradualmente ese círculo de confianza y notar las evidencias de que no todos van a traicionarte.',
+    '4':'Estás en un buen lugar. El "me cuido" ya no tiene que ser una coraza sino una simple consciencia. Seguí practicando la apertura gradual.',
+    '5':'Qué hermoso poder confiar así. Esa capacidad es un logro enorme si venís de una herida de traición. Cuidá seguir eligiendo personas que merezcan esa confianza.'
+  },
+  q5_2:{
+    espejo:'El espejo es el ejercicio más simple y más transformador. 5 minutos al día. Mirarte a los ojos. Decirte algo real y amoroso. El cerebro tarda pero aprende.',
+    mantra:'21 días de consistencia generan nuevos surcos neuronales. Ponélo en el despertador, en un post-it en el baño, en la nota del teléfono. Rodéate del mantra.',
+    diario:'El diario honesto es un espejo sin distorsión. Escribí sin censura. Lo que sale al papel ya no tiene el mismo poder adentro tuyo.',
+    cuerpo:'El cuerpo guarda la herida. Moverlo la libera. No necesita ser ejercicio intenso: bailar sola en tu cuarto 10 minutos es profundamente sanador.'
+  }
+};
+function selectChoice(btn,qId,value){
+  document.querySelectorAll(`#${qId} .choice-btn`).forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  autoSave(qId,value);
+  if(feedbacks[qId]&&feedbacks[qId][value]){
+    const box=document.getElementById(`fb_${qId}`);
+    document.getElementById(`fb_${qId}_text`).textContent=feedbacks[qId][value];
+    if(box)box.classList.add('show');
+  }
+}
+function autoSave(k,v){saved[k]=v;}
+function saveAll(btn){btn.textContent='✦ ¡Compromiso guardado!';btn.classList.add('saved');setTimeout(()=>{btn.textContent='✦ Guardar mi compromiso de sanación';btn.classList.remove('saved');},3000);}
+function changePage(dir){
+  const next=current+dir;
+  if(next<1||next>totalPages)return;
+  document.getElementById(`p${current}`).classList.remove('active');
+  current=next;
+  document.getElementById(`p${current}`).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  updateNav();
+}
+function updateNav(){
+  document.getElementById('navPages').textContent=`${current} / ${totalPages}`;
+  document.getElementById('prevBtn').disabled=current===1;
+  document.getElementById('nextBtn').disabled=current===totalPages;
+  document.getElementById('progressBar').style.width=((current-1)/(totalPages-1)*100)+'%';
+}
+updateNav();
+</script>
+</body>
+</html>
