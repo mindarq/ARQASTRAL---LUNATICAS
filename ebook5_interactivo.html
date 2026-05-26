@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ebook 5 · Cartas de Sanación</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Raleway:wght@200;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0a0c14;--indigo:#1e2a4a;--violet:#3a2a5a;--star:#e8d590;--luna:#c8d8f0;--rose:#e8b8c8;--parchment:#f8f4ec;--ink:#2a2030;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--night);font-family:'EB Garamond',Georgia,serif;display:flex;flex-direction:column;align-items:center;}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--violet),var(--star));transition:width .5s ease;z-index:100;}
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:rgba(10,12,20,0.97);backdrop-filter:blur(12px);border:1px solid rgba(232,213,144,.25);border-radius:50px;padding:10px 20px;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.7);}
+.nav-btn{background:none;border:1px solid rgba(232,213,144,.35);color:var(--star);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.nav-btn:hover{background:rgba(232,213,144,.1);}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+.nav-pages{font-family:'EB Garamond',serif;font-size:14px;color:rgba(255,255,255,.35);min-width:70px;text-align:center;letter-spacing:2px;}
+
+.page{display:none;width:820px;min-height:100vh;animation:fadeIn .5s ease;}
+.page.active{display:flex;flex-direction:column;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* COVER */
+.cover{background:var(--night);align-items:center;justify-content:center;padding:80px 70px;position:relative;overflow:hidden;}
+.star-field{position:absolute;width:100%;height:100%;top:0;left:0;}
+.star-dot{position:absolute;background:#fff;border-radius:50%;}
+.moon{width:260px;height:260px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#d4c8f0,#6a5a9a 60%,#2a1a4a);margin-bottom:44px;position:relative;box-shadow:0 0 70px rgba(106,90,154,.35);}
+.moon::after{content:'';position:absolute;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle at 40% 40%,rgba(255,255,255,.07),transparent 60%);top:10%;left:10%;}
+.cover-content{position:relative;z-index:1;text-align:center;display:flex;flex-direction:column;align-items:center;}
+.ebook-badge{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:6px;color:var(--star);text-transform:uppercase;margin-bottom:14px;}
+.cover-title{font-size:56px;color:#fff;text-align:center;line-height:1.05;margin-bottom:10px;}
+.cover-title em{display:block;color:var(--rose);font-style:italic;font-size:44px;}
+.cover-divider{width:1px;height:50px;background:linear-gradient(transparent,var(--star),transparent);margin:20px 0;}
+.cover-sub{font-size:16px;color:rgba(255,255,255,.45);text-align:center;font-style:italic;line-height:1.6;max-width:380px;}
+.cover-brand{position:absolute;bottom:36px;font-family:'Raleway',sans-serif;font-size:10px;color:rgba(255,255,255,.18);letter-spacing:5px;text-transform:uppercase;}
+
+/* INNER - PARCHMENT */
+.inner{background:var(--parchment);padding:65px 80px 120px;position:relative;}
+.inner::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--violet),var(--star),var(--rose),var(--star),var(--violet));}
+
+/* INNER - DARK */
+.inner-dark{background:var(--indigo);padding:65px 80px 120px;position:relative;}
+.inner-dark::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--violet),var(--star),var(--rose),var(--star),var(--violet));}
+
+.eye{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;color:var(--violet);text-transform:uppercase;margin-bottom:8px;}
+.eye.light{color:var(--luna);}
+.h1{font-size:38px;color:var(--ink);line-height:1.15;margin-bottom:22px;}
+.h1 em{color:#6a4a8a;font-style:italic;}
+.h1.light{color:#fff;}
+.h1.light em{color:var(--rose);}
+.bp{font-size:17px;line-height:1.9;color:#4a3a58;margin-bottom:18px;}
+.bp.light{color:rgba(255,255,255,.75);}
+
+/* Letter block */
+.letter-block{background:#fff;border:1px solid rgba(106,74,138,.15);border-radius:12px;padding:32px 36px;margin:20px 0;position:relative;box-shadow:0 3px 20px rgba(106,74,138,.06);}
+.letter-block::before{content:attr(data-type);position:absolute;top:-11px;left:28px;background:var(--violet);color:#fff;font-family:'Raleway',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:4px 12px;border-radius:20px;}
+.letter-salute{font-size:19px;font-style:italic;color:var(--violet);margin-bottom:18px;border-bottom:1px solid rgba(106,74,138,.1);padding-bottom:14px;}
+.letter-body{font-size:16px;line-height:1.9;color:#4a3a58;margin-bottom:14px;}
+.letter-sign{font-size:17px;font-style:italic;color:var(--violet);margin-top:18px;border-top:1px solid rgba(106,74,138,.1);padding-top:14px;}
+
+/* Ritual steps */
+.ritual-steps{list-style:none;counter-reset:ritual;display:flex;flex-direction:column;gap:18px;margin:18px 0;}
+.ritual-steps li{counter-increment:ritual;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:flex-start;}
+.ritual-steps li::before{content:counter(ritual);font-family:'EB Garamond',serif;font-size:34px;color:var(--star);font-weight:500;line-height:1;text-align:right;}
+.ritual-text{font-size:16px;line-height:1.75;color:rgba(255,255,255,.8);padding-top:4px;}
+.ritual-text strong{color:var(--luna);display:block;margin-bottom:2px;font-size:15px;}
+
+/* Instruction row */
+.instr-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(106,74,138,.08);font-size:15px;color:#5a4a68;line-height:1.5;}
+
+/* Q section */
+.q-section{background:var(--ink);border-radius:18px;padding:32px 36px;margin:22px 0;}
+.q-section.on-dark{background:rgba(0,0,0,.3);border:1px solid rgba(232,213,144,.12);}
+.q-title{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;color:var(--star);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.q-title::after{content:'';flex:1;height:1px;background:rgba(232,213,144,.18);}
+.question{margin-bottom:24px;}
+.q-label{font-size:18px;color:#fff;line-height:1.5;margin-bottom:12px;font-style:italic;}
+.choices{display:flex;flex-direction:column;gap:7px;}
+.choice-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);padding:11px 17px;border-radius:10px;cursor:pointer;text-align:left;font-family:'EB Garamond',serif;font-size:16px;transition:all .2s;}
+.choice-btn:hover{background:rgba(106,74,138,.2);border-color:rgba(106,74,138,.5);}
+.choice-btn.selected{background:rgba(106,74,138,.3);border-color:var(--violet);color:#fff;}
+.q-textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:13px 17px;color:#fff;font-family:'EB Garamond',serif;font-size:16px;line-height:1.75;resize:vertical;min-height:90px;transition:border-color .2s;}
+.q-textarea:focus{outline:none;border-color:rgba(232,213,144,.4);}
+.q-textarea::placeholder{color:rgba(255,255,255,.2);}
+.feedback-box{display:none;background:rgba(232,213,144,.1);border:1px solid rgba(232,213,144,.2);border-radius:10px;padding:17px 21px;margin-top:12px;}
+.feedback-box.show{display:block;animation:fadeIn .4s ease;}
+.feedback-box p{font-size:15px;line-height:1.7;color:rgba(255,255,255,.82);font-style:italic;}
+.fb-icon{font-size:20px;margin-bottom:6px;display:block;}
+.save-btn{background:linear-gradient(135deg,var(--violet),#2a1a4a);color:#fff;border:none;border-radius:10px;padding:11px 22px;cursor:pointer;font-family:'EB Garamond',serif;font-size:16px;margin-top:14px;transition:opacity .2s;letter-spacing:1px;}
+.save-btn:hover{opacity:.85;}
+.save-btn.saved{background:linear-gradient(135deg,#4a8a60,#2a6040);}
+
+.rec-box{background:#fff;border:1px solid rgba(106,74,138,.12);border-radius:14px;padding:24px 28px;margin:18px 0;border-left:4px solid var(--violet);}
+.rec-box h4{font-size:17px;color:var(--violet);margin-bottom:12px;}
+.rec-box ul{list-style:none;}
+.rec-box ul li{font-size:14.5px;line-height:1.7;color:#5a4a68;padding:6px 0;border-bottom:1px solid rgba(106,74,138,.07);display:flex;gap:10px;}
+.rec-box ul li:last-child{border:none;}
+.rec-box ul li::before{content:'✦';color:var(--star);font-size:11px;flex-shrink:0;margin-top:4px;}
+
+/* CLOSING */
+.closing{background:var(--night);align-items:center;justify-content:center;text-align:center;padding:70px 80px;position:relative;overflow:hidden;}
+.closing::before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(106,74,138,.15) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);}
+.closing-content{position:relative;z-index:1;max-width:560px;}
+.closing h2{font-size:44px;color:#fff;margin:16px 0;line-height:1.2;}
+.closing h2 em{color:var(--rose);font-style:italic;}
+.closing p{font-size:17px;color:rgba(255,255,255,.6);line-height:1.85;max-width:460px;margin:0 auto 20px;}
+.final-aff{font-size:23px;font-style:italic;color:var(--star);padding:24px 32px;border:1px solid rgba(232,213,144,.2);border-radius:14px;max-width:500px;margin:0 auto;line-height:1.5;}
+
+.footer-page{position:absolute;bottom:22px;left:0;right:0;display:flex;justify-content:space-between;padding:0 80px;font-family:'Raleway',sans-serif;font-size:9px;color:rgba(42,32,48,.22);letter-spacing:3px;text-transform:uppercase;}
+.footer-page.light{color:rgba(255,255,255,.12);}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- P1 COVER -->
+<div class="page cover active" id="p1">
+  <div class="star-field">
+    <div class="star-dot" style="width:2px;height:2px;top:10%;left:8%;opacity:.5;"></div>
+    <div class="star-dot" style="width:1px;height:1px;top:20%;left:80%;opacity:.4;"></div>
+    <div class="star-dot" style="width:2px;height:2px;top:7%;left:55%;opacity:.7;"></div>
+    <div class="star-dot" style="width:1px;height:1px;top:35%;left:12%;opacity:.4;"></div>
+    <div class="star-dot" style="width:2px;height:2px;top:70%;left:90%;opacity:.5;"></div>
+    <div class="star-dot" style="width:1px;height:1px;top:85%;left:22%;opacity:.4;"></div>
+    <div class="star-dot" style="width:3px;height:3px;top:15%;left:32%;opacity:.25;"></div>
+    <div class="star-dot" style="width:1px;height:1px;top:75%;left:62%;opacity:.55;"></div>
+    <div class="star-dot" style="width:2px;height:2px;top:55%;left:5%;opacity:.6;"></div>
+    <div class="star-dot" style="width:1px;height:1px;top:42%;left:94%;opacity:.4;"></div>
+  </div>
+  <div class="cover-content">
+    <div class="moon"></div>
+    <div class="ebook-badge">✦ Ebook 5 · Sanando con Papá · Para Lunáticas</div>
+    <div class="cover-divider"></div>
+    <div class="cover-title">Cartas de<br><em>Sanación y Liberación</em></div>
+    <div class="cover-sub">Ejercicios espirituales para sanar el linaje paterno, honrar tus raíces y liberarte con amor.</div>
+  </div>
+  <div class="cover-brand">✦ Sanarte · Tu espacio de sanación ✦</div>
+</div>
+
+<!-- P2: Carta de Liberación -->
+<div class="page inner" id="p2">
+  <div class="eye">Ejercicio espiritual · Carta 1</div>
+  <div class="h1">Carta de liberación<br><em>energética para papá</em></div>
+
+  <p class="bp" style="font-style:italic;color:#6a4a8a;">Esta carta debe escribirse con puño y letra. No se entregará a nadie. Leéla en voz alta cuando esté lista y luego quémala. Puede hacerse las veces que tu alma lo necesite.</p>
+
+  <div style="display:flex;gap:14px;margin-bottom:18px;">
+    <div class="instr-row" style="flex:1;border:none;flex-direction:column;align-items:center;background:#fff;border-radius:10px;padding:16px;text-align:center;">
+      <span style="font-size:28px;margin-bottom:8px;">✍️</span>
+      <span style="font-size:13px;color:#6a4a8a;font-weight:500;">Escribí a mano</span>
+    </div>
+    <div class="instr-row" style="flex:1;border:none;flex-direction:column;align-items:center;background:#fff;border-radius:10px;padding:16px;text-align:center;">
+      <span style="font-size:28px;margin-bottom:8px;">🔊</span>
+      <span style="font-size:13px;color:#6a4a8a;font-weight:500;">Leéla en voz alta</span>
+    </div>
+    <div class="instr-row" style="flex:1;border:none;flex-direction:column;align-items:center;background:#fff;border-radius:10px;padding:16px;text-align:center;">
+      <span style="font-size:28px;margin-bottom:8px;">🔥</span>
+      <span style="font-size:13px;color:#6a4a8a;font-weight:500;">Quémala después</span>
+    </div>
+  </div>
+
+  <div class="letter-block" data-type="Carta de Liberación">
+    <p class="letter-salute">Querido padre: [nombre completo]<br>Tu hij@ [tu nombre completo]</p>
+    <p class="letter-body">Papá, hoy reconozco en ti que más que ser mi padre eres energía — una energía kármica y ancestral que se me otorga por las memorias de nuestro árbol genealógico.</p>
+    <p class="letter-body">Te amo, y amo a mis abuelos, bisabuelos y tatarabuelos. Pero <em>tu energía, tus karmas, tus patrones, creencias, enfermedades y miedos, te pertenecen a ti.</em> Me libero de ellos con amor y con respeto.</p>
+    <p class="letter-body">Hoy te pido permiso para comenzar un camino de vida diferente al tuyo. Gracias por darme la vida y permitirme ser lo que hoy quiero ser.</p>
+    <p class="letter-sign">Con amor, Tu hij@ [nombre completo]</p>
+  </div>
+
+  <div class="q-section">
+    <div class="q-title">✦ Preguntas de integración</div>
+    <div class="question">
+      <div class="q-label">1. ¿Qué patrón, creencia o energía de tu padre sentís que más necesitás liberar?</div>
+      <div class="choices" id="q2_1">
+        <button class="choice-btn" onclick="selectChoice(this,'q2_1','miedo')">Sus miedos y limitaciones económicas o sociales</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q2_1','conductas')">Sus conductas dañinas o adictivas</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q2_1','creencias amor')">Sus creencias sobre el amor y los vínculos</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q2_1','ausencia')">La energía de su ausencia o distancia emocional</button>
+      </div>
+      <div class="feedback-box" id="fb_q2_1"><span class="fb-icon">🌙</span><p id="fb_q2_1_text"></p></div>
+    </div>
+    <div class="question">
+      <div class="q-label">2. ¿Cómo te sentís cuando imaginás escribir esta carta? ¿Qué emoción aparece primero?</div>
+      <textarea class="q-textarea" id="q2_2" placeholder="Puede ser miedo, tristeza, alivio anticipado, enojo, amor... todas las emociones son válidas aquí." oninput="autoSave('q2_2',this.value)"></textarea>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <h4>✦ Recomendación profunda</h4>
+    <ul>
+      <li>Elegí un día específico esta semana para escribir la carta — no "cuando puedas". Ponerle fecha es comprometerte con vos misma.</li>
+      <li>Si la emoción al escribir se vuelve muy intensa: pausá, respirá, poné una mano en el corazón. El cuerpo necesita saber que estás a salvo.</li>
+    </ul>
+  </div>
+  <div class="footer-page"><span>Ebook 5 · Cartas de Sanación</span><span>Sanarte</span><span>Página 2</span></div>
+</div>
+
+<!-- P3: Carta de Agradecimiento -->
+<div class="page inner" id="p3">
+  <div class="eye">Ejercicio espiritual · Carta 2</div>
+  <div class="h1">Carta de agradecimiento<br><em>a nuestro padre</em></div>
+
+  <div class="letter-block" data-type="Carta de Agradecimiento">
+    <p class="letter-salute">Querido padre: [nombre completo]<br>De tu hij@ [tu nombre completo]</p>
+    <p class="letter-body">Padre, estaba en el universo navegando entre luces azules, doradas y plateadas como una energía pura — hasta que tu energía me atrajo. <em>Te escogí, papá. Te escogí porque ibas a ser mi maestro de vida.</em></p>
+    <p class="letter-body">Tal vez antes no comprendía muchas cosas. Te juzgué, te rechacé, te critiqué. Sufrí tu abandono y tu ausencia. Pero hoy me di cuenta que ya nada de ese dolor está en mi corazón porque lo sané.</p>
+    <p class="letter-body">Hoy comprendí que me diste lo que a ti te dieron. Que no me podías dar más amor porque no conociste lo que era el amor de verdad. <em>Hoy te abrazo, te honro y te amo.</em></p>
+    <p class="letter-sign">Con amor, Tu hij@ [nombre completo]</p>
+  </div>
+
+  <div class="q-section">
+    <div class="q-title">✦ Preguntas de integración</div>
+    <div class="question">
+      <div class="q-label">3. ¿Podés encontrar algo genuino que agradecerle a tu padre? (No lo que debería haber sido — lo que fue)</div>
+      <textarea class="q-textarea" id="q3_1" placeholder="Por pequeño que parezca. La vida. Un rasgo de carácter. Un momento específico. Algo que te dio aunque no supiera darlo bien..." oninput="autoSave('q3_1',this.value)"></textarea>
+    </div>
+    <div class="question">
+      <div class="q-label">4. ¿En qué nivel del proceso de perdón hacia tu padre te encontrás hoy?</div>
+      <div class="choices" id="q3_2">
+        <button class="choice-btn" onclick="selectChoice(this,'q3_2','inicio')">Recién empezando — hay mucho dolor todavía activo</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q3_2','proceso')">En proceso — a veces puedo comprenderlo, a veces no</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q3_2','comprension')">Lo comprendo intelectualmente pero no lo siento en el cuerpo</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q3_2','paz')">Tengo cierta paz genuina con su historia</button>
+      </div>
+      <div class="feedback-box" id="fb_q3_2"><span class="fb-icon">💜</span><p id="fb_q3_2_text"></p></div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <h4>✦ Recomendación profunda</h4>
+    <ul>
+      <li>El perdón genuino no se fuerza ni se apresura. Si no llegaste todavía, no pasa nada. Podés escribir la carta de agradecimiento por la vida sin necesitar perdonar todo lo demás todavía.</li>
+      <li>Diferencia importante: perdonar NO significa justificar lo que hizo, reconciliarte con él, ni borrarlo de tu historia. Significa liberarte vos del peso de cargarlo.</li>
+    </ul>
+  </div>
+  <div class="footer-page"><span>Ebook 5 · Cartas de Sanación</span><span>Sanarte</span><span>Página 3</span></div>
+</div>
+
+<!-- P4: Presentación Sistémica (dark) -->
+<div class="page inner-dark" id="p4">
+  <div class="eye light">Ejercicio espiritual · Ritual</div>
+  <div class="h1 light">Presentación sistémica<br><em>al Universo</em></div>
+
+  <p class="bp light">En este ejercicio brindás con amor y orgullo tus nuevas coordenadas al Universo. Cuando sabés quién sos y de dónde venís, al Universo se le facilita enviarte todo lo que resuena con tu nueva energía.</p>
+
+  <ul class="ritual-steps">
+    <li><div class="ritual-text"><strong>Ponete de pie</strong>Con el corazón lleno de gratitud, mirá al cielo buscando conexión con Dios, tu Padre, Madre, Universo.</div></li>
+    <li><div class="ritual-text"><strong>Llevá una mano al corazón y decí:</strong>"Yo Soy [nombre completo], nacida/o el [fecha de nacimiento]."</div></li>
+    <li><div class="ritual-text"><strong>Decí en voz alta:</strong>"Hija/o de [nombre completo de mi padre]"</div></li>
+    <li><div class="ritual-text"><strong>Decí en voz alta:</strong>"Hija/o de [nombre completo de mi madre]"</div></li>
+    <li><div class="ritual-text"><strong>Con brazos abiertos hacia arriba:</strong>"Querido Universo, me encuentro lista para recibir. Estas son mis coordenadas."</div></li>
+    <li><div class="ritual-text"><strong>Llevá las manos al corazón y repetí tres veces:</strong>"Gracias. Gracias. Gracias."</div></li>
+  </ul>
+
+  <div class="q-section on-dark">
+    <div class="q-title">✦ Preguntas de integración</div>
+    <div class="question">
+      <div class="q-label">5. ¿Cómo te sentís al decir en voz alta el nombre de tu padre como parte de tu identidad?</div>
+      <div class="choices" id="q4_1">
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','incomodo')">Incómoda — hay resistencia o rechazo</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','neutral')">Neutral — lo digo sin mucha carga</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','emocion')">Con emoción — algo se mueve dentro</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','orgullo')">Con cierto orgullo o aceptación genuina</button>
+      </div>
+      <div class="feedback-box" id="fb_q4_1"><span class="fb-icon">🌟</span><p id="fb_q4_1_text"></p></div>
+    </div>
+    <div class="question">
+      <div class="q-label">6. ¿Qué querés "recibir" del Universo ahora que estás trabajando en liberar el linaje paterno?</div>
+      <textarea class="q-textarea" id="q4_2" placeholder="Nombrá lo que querés atraer: un amor diferente, más confianza, abundancia, paz, poder personal..." oninput="autoSave('q4_2',this.value)"></textarea>
+    </div>
+  </div>
+  <div class="footer-page light"><span>Ebook 5 · Cartas de Sanación</span><span>Sanarte</span><span>Página 4</span></div>
+</div>
+
+<!-- P5: Carta de Liberación Familiar + cierre -->
+<div class="page closing" id="p5">
+  <div class="closing-content">
+    <div style="font-size:50px;margin-bottom:18px;">🌕</div>
+    <div style="font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;color:var(--star);text-transform:uppercase;margin-bottom:10px;">Cierre del portal</div>
+    <h2>La carta de<br><em>liberación familiar</em></h2>
+    <p>Esta es la carta más completa. Libera el linaje entero — no solo al padre, sino a todos los que vinieron antes.</p>
+
+    <div class="q-section" style="text-align:left;margin:20px 0;">
+      <div class="q-title">✦ Reflexión antes del cierre</div>
+      <div class="question">
+        <div class="q-label">7. Después de recorrer estos 5 ebooks, ¿qué cambió en la forma en que ves a tu padre?</div>
+        <textarea class="q-textarea" id="q5_1" placeholder="No importa si es un cambio pequeño. Cualquier apertura cuenta..." oninput="autoSave('q5_1',this.value)"></textarea>
+      </div>
+      <div class="question">
+        <div class="q-label">8. ¿Qué prometés hacer diferente en tus vínculos a partir de este trabajo?</div>
+        <div class="choices" id="q5_2">
+          <button class="choice-btn" onclick="selectChoice(this,'q5_2','observar')">Observar mis reacciones antes de actuar desde la herida</button>
+          <button class="choice-btn" onclick="selectChoice(this,'q5_2','pedir')">Pedir lo que necesito en lugar de esperar que lo adivinen</button>
+          <button class="choice-btn" onclick="selectChoice(this,'q5_2','elegir')">Elegir vínculos que me nutran en lugar de los que repiten el patrón</button>
+          <button class="choice-btn" onclick="selectChoice(this,'q5_2','darme')">Darme a mí misma lo que busqué siempre afuera</button>
+        </div>
+        <div class="feedback-box" id="fb_q5_2"><span class="fb-icon">💫</span><p id="fb_q5_2_text"></p></div>
+        <button class="save-btn" onclick="saveAll(this)" style="margin-top:16px;">✦ Guardar mi compromiso final</button>
+      </div>
+    </div>
+
+    <div class="final-aff">"No hay recetas mágicas para sanar la relación con tu padre. Esto es un trabajo de por vida — y exactamente por eso es sagrado."</div>
+    <p style="font-family:'Raleway',sans-serif;font-size:10px;color:rgba(255,255,255,.15);letter-spacing:4px;text-transform:uppercase;margin-top:20px;">✦ Sanarte · Tu espacio de sanación</p>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>‹</button>
+  <span class="nav-pages" id="navPages">1 / 5</span>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">›</button>
+</div>
+
+<script>
+const totalPages=5;let current=1;const saved={};
+const feedbacks={
+  q2_1:{
+    miedo:'Los miedos económicos y sociales son de los más arraigados porque tocan la supervivencia. Liberarlos implica también desafiar las creencias sobre el mérito y el merecimiento. Es un trabajo profundo y muy liberador.',
+    conductas:'Las conductas dañinas o adictivas dejan una impronta en el sistema nervioso: aprendemos a vivir en modo de alerta o de caos. Liberar eso es también sanar el cuerpo, no solo la mente.',
+    'creencias amor':'Las creencias sobre el amor son las que más directamente impactan tus relaciones. Liberarlas abre literalmente el espacio para que llegue un amor diferente.',
+    ausencia:'La energía de la ausencia puede ser la más sutil y la más penetrante. Se instala como una convicción de que "algo siempre va a faltar". Liberarla es aprender a sentirse completa.'
+  },
+  q3_2:{
+    inicio:'Estar al inicio es exactamente donde tenés que estar si eso es donde estás. El perdón genuino no se puede forzar. Lo que sí podés hacer es darte permiso para sentir el dolor sin quedarte atrapada en él para siempre.',
+    proceso:'El proceso es el lugar más honesto que existe. No te apures a "llegar al perdón". El camino mismo ya es la sanación.',
+    comprension:'La brecha entre entender intelectualmente y sentirlo en el cuerpo se cierra con prácticas corporales: el movimiento, la respiración, el llanto. El cuerpo sana a un ritmo diferente que la mente.',
+    paz:'Esa paz genuina es un regalo enorme, especialmente si costó trabajo llegar a ella. Cuidala. Es una base sólida desde donde seguir creciendo.'
+  },
+  q4_1:{
+    incomodo:'La incomodidad al nombrar a tu padre como parte de vos es información valiosa: muestra dónde todavía hay herida activa. No hace falta forzar el orgullo — basta con reconocerlo como parte de tu historia.',
+    neutral:'La neutralidad puede ser un buen lugar: ni rechazo ni idealización. Desde ahí se puede mirar con más claridad.',
+    emocion:'Que algo se mueva es que algo está vivo. Esas emociones que se activan son la herida pidiéndote atención. Bienvenido el movimiento.',
+    orgullo:'Ese orgullo o aceptación es sanación en acción. Poder reconocer que venís de él — con todo lo que eso implica — sin que eso te defina ni te limite, es una forma de libertad.'
+  },
+  q5_2:{
+    observar:'Observar antes de actuar es interrumpir el piloto automático. Es el gesto más pequeño con el impacto más grande. Con práctica, ese espacio de observación se vuelve cada vez más largo.',
+    pedir:'Pedir lo que necesitás sin esperar que lo adivinen es uno de los cambios más difíciles y más transformadores. Es comunicación desde el amor propio en lugar del dolor.',
+    elegir:'Elegir conscientemente vínculos que nutren es el resultado de todo este trabajo interior. No siempre será fácil, pero ahora tenés la consciencia para reconocer la diferencia.',
+    darme:'Darte a vos misma lo que buscaste afuera cierra el círculo de la dependencia emocional. Es la mayor liberación: descubrir que ya tenés lo que necesitabas.'
+  }
+};
+function selectChoice(btn,qId,value){
+  document.querySelectorAll(`#${qId} .choice-btn`).forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');autoSave(qId,value);
+  if(feedbacks[qId]&&feedbacks[qId][value]){
+    const box=document.getElementById(`fb_${qId}`);
+    document.getElementById(`fb_${qId}_text`).textContent=feedbacks[qId][value];
+    if(box)box.classList.add('show');
+  }
+}
+function autoSave(k,v){saved[k]=v;}
+function saveAll(btn){btn.textContent='✦ ¡Compromiso guardado!';btn.classList.add('saved');setTimeout(()=>{btn.textContent='✦ Guardar mi compromiso final';btn.classList.remove('saved');},3000);}
+function changePage(dir){
+  const next=current+dir;
+  if(next<1||next>totalPages)return;
+  document.getElementById(`p${current}`).classList.remove('active');
+  current=next;
+  document.getElementById(`p${current}`).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});updateNav();
+}
+function updateNav(){
+  document.getElementById('navPages').textContent=`${current} / ${totalPages}`;
+  document.getElementById('prevBtn').disabled=current===1;
+  document.getElementById('nextBtn').disabled=current===totalPages;
+  document.getElementById('progressBar').style.width=((current-1)/(totalPages-1)*100)+'%';
+}
+updateNav();
+</script>
+</body>
+</html>

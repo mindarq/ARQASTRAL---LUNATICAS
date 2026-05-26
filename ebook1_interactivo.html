@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ebook 1 · El Papel del Padre</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a0a2e;
+  --rose: #c9506a;
+  --blush: #f5d6df;
+  --gold: #c9a84c;
+  --cream: #fdf6f0;
+  --mist: #ede4f5;
+  --violet: #6a3a8a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--ink);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--rose), var(--gold));
+  transition: width 0.5s ease;
+  z-index: 100;
+}
+
+/* NAV */
+.nav {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(26,10,46,0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(201,80,106,0.3);
+  border-radius: 50px;
+  padding: 10px 20px;
+  z-index: 100;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.nav-btn {
+  background: none;
+  border: 1px solid rgba(201,168,76,0.4);
+  color: var(--gold);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-btn:hover { background: rgba(201,168,76,0.15); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-pages {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  min-width: 70px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* PAGES */
+.page {
+  display: none;
+  width: 820px;
+  min-height: 100vh;
+  padding: 60px 80px 120px;
+  animation: fadeIn 0.5s ease;
+}
+.page.active { display: flex; flex-direction: column; }
+@keyframes fadeIn { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform:none; } }
+
+/* ── PAGE 1: COVER ── */
+.cover {
+  background: linear-gradient(150deg, #1a0a2e 0%, #2d1155 50%, #1a0a2e 100%);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content:'';
+  position:absolute;
+  width:500px; height:500px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(201,80,106,0.12) 0%, transparent 70%);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+}
+.cover-ornament { font-size:36px; color:var(--gold); letter-spacing:10px; margin-bottom:32px; opacity:0.8; }
+.cover-badge {
+  font-size:11px; letter-spacing:5px; color:var(--rose);
+  text-transform:uppercase; margin-bottom:20px;
+}
+.cover-title {
+  font-family:'Playfair Display',serif;
+  font-size:62px; color:#fff; line-height:1.05; margin-bottom:16px;
+}
+.cover-title em { display:block; color:var(--rose); font-style:italic; font-size:48px; }
+.cover-line { width:60px; height:1px; background:var(--gold); margin:28px auto; opacity:0.5; }
+.cover-sub { font-size:17px; color:rgba(255,255,255,0.45); letter-spacing:3px; }
+.cover-brand {
+  position:absolute; bottom:40px;
+  font-size:11px; color:var(--gold); letter-spacing:4px; text-transform:uppercase; opacity:0.6;
+}
+
+/* ── INNER PAGES ── */
+.inner { background: var(--cream); position:relative; }
+.inner::before {
+  content:'';
+  position:absolute; top:0; left:0;
+  width:5px; height:100%;
+  background: linear-gradient(180deg, var(--rose), var(--gold));
+}
+
+.page-eyebrow { font-size:10px; letter-spacing:5px; color:var(--rose); text-transform:uppercase; margin-bottom:8px; }
+.page-h1 {
+  font-family:'Playfair Display',serif;
+  font-size:38px; color:var(--ink); line-height:1.2; margin-bottom:28px;
+}
+.page-h1 em { color:var(--rose); font-style:italic; }
+
+.body-p { font-size:17px; line-height:1.9; color:#3a2a4e; margin-bottom:20px; }
+
+.callout {
+  background: linear-gradient(135deg, var(--rose), #a03055);
+  color:#fff; border-radius:14px;
+  padding:26px 30px; margin:24px 0;
+}
+.callout p { font-family:'Playfair Display',serif; font-size:20px; font-style:italic; line-height:1.5; }
+
+.card-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:20px 0; }
+.card {
+  background:#fff; border:1px solid rgba(201,80,106,0.15);
+  border-radius:12px; padding:20px;
+}
+.card-icon { font-size:26px; margin-bottom:10px; display:block; }
+.card h4 { font-family:'Playfair Display',serif; font-size:16px; color:var(--rose); margin-bottom:6px; }
+.card p { font-size:14px; line-height:1.6; color:#6a5a7e; }
+
+.type-list { list-style:none; margin:16px 0; }
+.type-list li {
+  display:flex; gap:14px; align-items:flex-start;
+  padding:14px 0; border-bottom:1px solid rgba(201,80,106,0.1);
+  font-size:16px; color:#3a2a4e; line-height:1.5;
+}
+.type-list li .num {
+  font-family:'Playfair Display',serif; font-size:30px;
+  color:var(--blush); font-weight:700; line-height:1; flex-shrink:0; width:30px;
+}
+.type-list li strong { color:var(--rose); display:block; margin-bottom:2px; }
+
+/* ── INTERACTIVE QUESTIONS ── */
+.q-section {
+  background: var(--ink);
+  border-radius:20px;
+  padding:36px 40px;
+  margin:28px 0;
+}
+.q-section-title {
+  font-family:'Playfair Display',serif;
+  font-size:13px; letter-spacing:4px; color:var(--gold);
+  text-transform:uppercase; margin-bottom:24px;
+  display:flex; align-items:center; gap:10px;
+}
+.q-section-title::after { content:''; flex:1; height:1px; background:rgba(201,168,76,0.2); }
+
+.question { margin-bottom:28px; }
+.q-label {
+  font-family:'Playfair Display',serif;
+  font-size:18px; color:#fff; line-height:1.5;
+  margin-bottom:14px; font-style:italic;
+}
+
+/* Multiple choice */
+.choices { display:flex; flex-direction:column; gap:8px; }
+.choice-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.75);
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;
+  transition: all 0.2s;
+}
+.choice-btn:hover { background:rgba(201,80,106,0.15); border-color:rgba(201,80,106,0.4); }
+.choice-btn.selected { background:rgba(201,80,106,0.25); border-color:var(--rose); color:#fff; }
+
+/* Text area */
+.q-textarea {
+  width:100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius:10px;
+  padding:14px 18px;
+  color:#fff;
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;
+  line-height:1.7;
+  resize:vertical;
+  min-height:100px;
+  transition: border-color 0.2s;
+}
+.q-textarea:focus { outline:none; border-color:rgba(201,168,76,0.5); }
+.q-textarea::placeholder { color:rgba(255,255,255,0.25); }
+
+/* Slider */
+.slider-wrap { padding:8px 0; }
+.q-slider {
+  width:100%; -webkit-appearance:none; appearance:none;
+  height:4px; border-radius:2px;
+  background: linear-gradient(90deg, var(--rose) 0%, rgba(255,255,255,0.15) 0%);
+  outline:none; cursor:pointer;
+}
+.q-slider::-webkit-slider-thumb {
+  -webkit-appearance:none; appearance:none;
+  width:20px; height:20px; border-radius:50%;
+  background: var(--gold); cursor:pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.slider-labels { display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,255,0.35); margin-top:8px; letter-spacing:1px; }
+
+/* Feedback box */
+.feedback-box {
+  display:none;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius:12px;
+  padding:20px 24px;
+  margin-top:16px;
+}
+.feedback-box.show { display:block; animation: fadeIn 0.4s ease; }
+.feedback-box p {
+  font-size:15px; line-height:1.7;
+  color:rgba(255,255,255,0.8); font-style:italic;
+}
+.feedback-box .fb-icon { font-size:22px; margin-bottom:8px; display:block; }
+
+.save-btn {
+  background: linear-gradient(135deg, var(--rose), #a03055);
+  color:#fff; border:none; border-radius:10px;
+  padding:12px 24px; cursor:pointer;
+  font-family:'Cormorant Garamond',serif; font-size:16px;
+  margin-top:16px; transition: opacity 0.2s;
+  letter-spacing:1px;
+}
+.save-btn:hover { opacity:0.85; }
+.save-btn.saved { background: linear-gradient(135deg,#4a8a60,#2a6040); }
+
+/* ── RECOMMENDATIONS ── */
+.rec-box {
+  background: var(--mist);
+  border-radius:16px; padding:28px 32px;
+  margin:20px 0;
+  border-left: 4px solid var(--violet);
+}
+.rec-box h4 {
+  font-family:'Playfair Display',serif;
+  font-size:17px; color:var(--violet); margin-bottom:12px;
+  display:flex; align-items:center; gap:8px;
+}
+.rec-box ul { list-style:none; }
+.rec-box ul li {
+  font-size:15px; line-height:1.7; color:#4a3a5e;
+  padding:6px 0; border-bottom:1px solid rgba(106,58,138,0.1);
+  display:flex; gap:10px;
+}
+.rec-box ul li:last-child { border:none; }
+.rec-box ul li::before { content:'✦'; color:var(--violet); font-size:11px; flex-shrink:0; margin-top:4px; }
+
+.dark-rec {
+  background: var(--ink); border-radius:16px; padding:28px 32px; margin:20px 0;
+}
+.dark-rec h4 { font-family:'Playfair Display',serif; font-size:18px; color:var(--gold); margin-bottom:14px; font-style:italic; }
+.dark-rec p { font-size:15px; line-height:1.8; color:rgba(255,255,255,0.75); margin-bottom:10px; }
+
+/* CLOSING page */
+.closing {
+  background: linear-gradient(150deg, var(--ink), var(--violet) 60%, var(--ink));
+  align-items:center; justify-content:center; text-align:center;
+}
+.closing-icon { font-size:60px; margin-bottom:24px; }
+.closing h2 { font-family:'Playfair Display',serif; font-size:42px; color:#fff; margin-bottom:16px; }
+.closing h2 em { color:var(--rose); font-style:italic; }
+.closing p { font-size:18px; line-height:1.8; color:rgba(255,255,255,0.65); max-width:460px; margin:0 auto 28px; }
+.closing .affirmation {
+  font-family:'Playfair Display',serif; font-size:22px; font-style:italic;
+  color:var(--gold); padding:24px 32px;
+  border:1px solid rgba(201,168,76,0.3); border-radius:16px;
+  max-width:500px; margin:0 auto;
+  line-height:1.5;
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- PAGE 1: COVER -->
+<div class="page cover active" id="p1">
+  <div class="cover-ornament">✦ ✦ ✦</div>
+  <div class="cover-badge">Ebook 1 · Sanando con Papá · Para Lunáticas</div>
+  <div class="cover-line"></div>
+  <div class="cover-title">El Papel del<br><em>Padre en tu Vida</em></div>
+  <div class="cover-line"></div>
+  <div class="cover-sub">Un recorrido de 5 páginas con preguntas de integración</div>
+  <div class="cover-brand">✦ Sanarte · Tu espacio de sanación ✦</div>
+</div>
+
+<!-- PAGE 2: Contenido + preguntas -->
+<div class="page inner" id="p2">
+  <div class="page-eyebrow">Fundamento</div>
+  <div class="page-h1">¿Para qué sirve un padre<br><em>en tu vida?</em></div>
+
+  <p class="body-p">El padre genera fuerza, seguridad, confianza, manejo de límites y poder personal. Su presencia —o ausencia— moldea quiénes somos en el amor y en el mundo. La relación con el padre determina cuán exitosa será la mujer en sus vínculos con los hombres, lo cual se traduce directamente en la estima que tenga de sí misma.</p>
+
+  <div class="card-grid">
+    <div class="card"><span class="card-icon">🛡️</span><h4>Seguridad</h4><p>Nos enseña que el mundo puede ser confiable y que somos capaces de habitarlo.</p></div>
+    <div class="card"><span class="card-icon">🌱</span><h4>Poder personal</h4><p>Nos transmite que merecemos ocupar espacio y que somos capaces de lograr cosas.</p></div>
+    <div class="card"><span class="card-icon">⚖️</span><h4>Límites</h4><p>Nos muestra cómo establecer fronteras sanas con el mundo y con los demás.</p></div>
+    <div class="card"><span class="card-icon">💫</span><h4>Primer amor</h4><p>En la vida de la mujer, el padre es el primer hombre amado. Esa relación define el patrón futuro.</p></div>
+  </div>
+
+  <div class="q-section">
+    <div class="q-section-title">✦ Preguntas de integración</div>
+
+    <div class="question">
+      <div class="q-label">1. ¿Cuál de estos roles crees que tu padre cumplió con más dificultad en tu vida?</div>
+      <div class="choices" id="q2_1">
+        <button class="choice-btn" onclick="selectChoice(this,'q2_1','Seguridad y protección')">🛡️ Seguridad y protección</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q2_1','Transmitir poder personal')">🌱 Transmitir poder personal</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q2_1','Enseñar límites sanos')">⚖️ Enseñar límites sanos</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q2_1','Ser un referente amoroso')">💫 Ser un referente amoroso</button>
+      </div>
+      <div class="feedback-box" id="fb_q2_1">
+        <span class="fb-icon">💡</span>
+        <p id="fb_q2_1_text"></p>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label">2. Escribí libremente: ¿Qué emociones surgen cuando pensás en tu papá?</div>
+      <textarea class="q-textarea" id="q2_2" placeholder="Tomá tu tiempo. No hay respuesta correcta. Lo que sientas es válido..." oninput="autoSave('q2_2',this.value)"></textarea>
+    </div>
+
+    <div class="question">
+      <div class="q-label">3. ¿En qué medida sentís que la relación con tu padre afecta tus vínculos amorosos actuales?</div>
+      <div class="slider-wrap">
+        <input type="range" class="q-slider" id="q2_3" min="1" max="10" value="5" oninput="updateSlider(this); autoSave('q2_3',this.value)">
+        <div class="slider-labels"><span>Poco</span><span>Moderadamente</span><span>Mucho</span></div>
+      </div>
+      <div class="feedback-box show" id="fb_q2_3">
+        <span class="fb-icon">🌸</span>
+        <p id="fb_q2_3_text">Mové el slider para recibir una reflexión personalizada.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PAGE 3: Los 6 tipos + preguntas -->
+<div class="page inner" id="p3">
+  <div class="page-eyebrow">Reconocimiento</div>
+  <div class="page-h1">Los 6 tipos de padre que<br><em>generan heridas</em></div>
+
+  <ul class="type-list">
+    <li><span class="num">1</span><div><strong>El padre desaprobador</strong>Nunca fue suficiente lo que hacías. Sus críticas dejaron huella en tu autoestima.</div></li>
+    <li><span class="num">2</span><div><strong>El padre con enfermedad mental</strong>Su estado condicionó toda la dinámica familiar, creando incertidumbre constante.</div></li>
+    <li><span class="num">3</span><div><strong>El padre con adicciones</strong>Su dependencia creó un ambiente de imprevisibilidad y dolor emocional crónico.</div></li>
+    <li><span class="num">4</span><div><strong>El padre abusador</strong>Sus abusos dejaron marcas que requieren un trabajo profundo y amoroso de sanación.</div></li>
+    <li><span class="num">5</span><div><strong>El que no cumple sus promesas</strong>Su inconsistencia generó desconfianza y la herida de traición.</div></li>
+    <li><span class="num">6</span><div><strong>El padre ausente</strong>Su falta —física o emocional— dejó un vacío que buscaste llenar en otros lugares.</div></li>
+  </ul>
+
+  <div class="q-section">
+    <div class="q-section-title">✦ Preguntas de integración</div>
+
+    <div class="question">
+      <div class="q-label">4. ¿Con cuál de estos perfiles identificás más a tu padre?</div>
+      <div class="choices" id="q3_1">
+        <button class="choice-btn" onclick="selectChoice(this,'q3_1','desaprobador')">El desaprobador</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q3_1','enfermedad mental')">El que padecía alguna enfermedad mental</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q3_1','adicciones')">El que tenía adicciones</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q3_1','abusador')">El abusador</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q3_1','no cumple')">El que no cumplía promesas</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q3_1','ausente')">El ausente (física o emocionalmente)</button>
+      </div>
+      <div class="feedback-box" id="fb_q3_1">
+        <span class="fb-icon">💜</span>
+        <p id="fb_q3_1_text"></p>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label">5. ¿Cómo crees que ese perfil paterno influyó en cómo elegís a tus parejas? Describilo con tus palabras.</div>
+      <textarea class="q-textarea" id="q3_2" placeholder="Quizás elegís personas que te desaprueban, o que siempre están disponibles para compensar lo que no tuviste..." oninput="autoSave('q3_2',this.value)"></textarea>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <h4>📚 Recomendación profunda</h4>
+    <ul>
+      <li>Llevar un diario donde registrés, sin juzgarte, los momentos en que reaccionás de forma exagerada a situaciones cotidianas. Detrás de cada reacción intensa hay una herida antigua pidiendo ser vista.</li>
+      <li>Si identificaste un padre abusador o con enfermedad mental, considerar acompañamiento terapéutico especializado en trauma. No es debilidad; es el acto más valiente de amor propio.</li>
+      <li>Leer "Las Heridas de la Infancia" de Lise Bourbeau para profundizar en cómo el perfil del padre moldea los patrones adultos.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PAGE 4: Comprensión + preguntas -->
+<div class="page inner" id="p4">
+  <div class="page-eyebrow">Comprensión y compasión</div>
+  <div class="page-h1">No somos jueces<br><em>de nuestros padres</em></div>
+
+  <p class="body-p">Volverse juez del padre —criticar qué dice, cómo habla, cómo administra su dinero— solo deja una carga pesada en tu espalda. Ante esa postura, papá toma la postura de callar.</p>
+
+  <div class="callout"><p>"Nuestros padres solo nos brindan lo que ellos saben. Todos venimos de un hombre y una mujer y debemos honrar y agradecer por el solo hecho de tener cuerpo y poder transitar esta experiencia humana."</p></div>
+
+  <p class="body-p">No es casualidad que tengas la familia que tenés. Es parte de las lecciones que viniste a aprender. Al comprenderlas, podés sanar la relación con tus padres y guiarte en el camino de la transformación.</p>
+
+  <div class="q-section">
+    <div class="q-section-title">✦ Preguntas de integración</div>
+
+    <div class="question">
+      <div class="q-label">6. ¿Cuál es la postura que adoptás más frecuentemente hacia tu padre?</div>
+      <div class="choices" id="q4_1">
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','lo juzgo')">Lo juzgo constantemente por sus errores</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','lo idealizo')">Lo idealizo y no puedo ver sus fallas</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','lo ignoro')">Prefiero no pensar en él / lo ignoro</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','compasion parcial')">Lo entiendo en parte, pero el dolor sigue</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q4_1','paz')">Logré cierta paz con nuestra historia</button>
+      </div>
+      <div class="feedback-box" id="fb_q4_1">
+        <span class="fb-icon">🌿</span>
+        <p id="fb_q4_1_text"></p>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label">7. Si pudieras entender qué heridas tuvo tu padre en su propia infancia, ¿qué imaginás que vivió?</div>
+      <textarea class="q-textarea" id="q4_2" placeholder="Pensá en su historia, en lo que sabés de su infancia, de sus padres... ¿Qué le faltó a él?" oninput="autoSave('q4_2',this.value)"></textarea>
+    </div>
+  </div>
+
+  <div class="dark-rec">
+    <h4>✦ Recomendación profunda</h4>
+    <p>Investigar la historia de tu árbol genealógico paterno. Hablar con tíos, primos, o revisar lo que sabés sobre la infancia de tu padre puede generar una compasión genuina que ninguna técnica de perdón puede forzar.</p>
+    <p>La comprensión no implica justificar lo que te dañó. Significa verlo como un ser humano incompleto que actuó desde sus propios vacíos. Ese cambio de perspectiva libera energía enorme.</p>
+  </div>
+</div>
+
+<!-- PAGE 5: Primeros pasos + cierre -->
+<div class="page inner" id="p5" style="padding-bottom:140px;">
+  <div class="page-eyebrow">Práctica y cierre</div>
+  <div class="page-h1">Tus primeros pasos<br><em>hacia la sanación</em></div>
+
+  <p class="body-p">La herida del padre ausente tiene efectos en toda la sociedad. Sanarla no se hace de un día para otro: es un proceso. La clave más poderosa es convertirte en tu propia figura paterna.</p>
+
+  <div class="card-grid">
+    <div class="card"><span class="card-icon">📝</span><h4>Escribí una carta</h4><p>Con puño y letra. Sin filtros. Leéla en voz alta y quémala. No se la entregarás a nadie.</p></div>
+    <div class="card"><span class="card-icon">🪞</span><h4>Observá tus relaciones</h4><p>¿Buscás en tu pareja lo que no tuviste de papá? La consciencia es el inicio del cambio.</p></div>
+    <div class="card"><span class="card-icon">🙏</span><h4>Practicá la gratitud</h4><p>Agradecé la vida que él te dio, más allá de sus limitaciones. Esa vida es tuya y es sagrada.</p></div>
+    <div class="card"><span class="card-icon">💪</span><h4>Sé tu propia figura paterna</h4><p>Nadie te dará más de lo que vos misma te des. Aprendé a ser el padre que necesitabas.</p></div>
+  </div>
+
+  <div class="q-section">
+    <div class="q-section-title">✦ Preguntas de integración</div>
+
+    <div class="question">
+      <div class="q-label">8. ¿Qué cualidad de un "padre ideal" te comprometés a darte a vos misma esta semana?</div>
+      <div class="choices" id="q5_1">
+        <button class="choice-btn" onclick="selectChoice(this,'q5_1','decirme palabras de aliento')">Decirme palabras de aliento al espejo cada mañana</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q5_1','protegerme de relaciones tóxicas')">Protegerme activamente de relaciones que me dañan</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q5_1','reconocer mis logros')">Reconocer mis logros sin minimizarlos</button>
+        <button class="choice-btn" onclick="selectChoice(this,'q5_1','poner un limite')">Poner un límite que venía postergando</button>
+      </div>
+      <div class="feedback-box" id="fb_q5_1">
+        <span class="fb-icon">⭐</span>
+        <p id="fb_q5_1_text"></p>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-label">9. ¿Qué te llevas de este ebook? Escribí tu mayor aprendizaje de hoy.</div>
+      <textarea class="q-textarea" id="q5_2" placeholder="Tu reflexión final... puede ser una sola frase o un párrafo entero." oninput="autoSave('q5_2',this.value)"></textarea>
+      <button class="save-btn" onclick="saveAll(this)">✦ Guardar mi reflexión final</button>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <h4>📖 Recomendaciones para continuar</h4>
+    <ul>
+      <li>Cada domingo por la noche, escribir 3 cosas que hiciste bien esa semana y decírtelas en voz alta como si fueras tu propio padre orgulloso.</li>
+      <li>Elegir una foto de tu padre y mantenerla visible durante 7 días, practicando mirarlo con ojos de compasión en lugar de juicio.</li>
+      <li>Repetir el mantra diario por 21 días: "Papá tomé mi energía. Me vuelvo poderosa, segura y fuerte."</li>
+      <li>Continuar con el Ebook 2 para identificar en profundidad cuál es tu herida principal de infancia.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>‹</button>
+  <span class="nav-pages" id="navPages">1 / 5</span>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">›</button>
+</div>
+
+<script>
+const totalPages = 5;
+let current = 1;
+const saved = {};
+
+// Feedbacks por pregunta y opción
+const feedbacks = {
+  q2_1: {
+    'Seguridad y protección': 'El miedo al mundo puede ser una huella de esa falta de protección. De adulta quizás buscás en otros esa seguridad que no internalizaste. El trabajo es aprender a sentirte segura dentro de vos misma.',
+    'Transmitir poder personal': 'Cuando el padre no transmite poder personal, tendemos a minimizarnos, a dudar de nuestra capacidad. Reconocer tus logros con consciencia es uno de los actos más sanadores que podés hacer.',
+    'Enseñar límites sanos': 'Sin un modelo sano de límites, de adultas solemos decir sí cuando queremos decir no, o ponemos muros enormes en lugar de fronteras amorosas. Aprender a limitarte con amor es tu próximo gran paso.',
+    'Ser un referente amoroso': 'Cuando el primer hombre en tu vida no supo amar, es natural buscar ese amor en todos los vínculos posteriores. La sanación pasa por aprender a darte a vos misma ese amor que él no supo dar.'
+  },
+  q3_1: {
+    desaprobador: 'El padre desaprobador deja una voz crítica interna muy potente. Te probás a vos misma constantemente, nunca es suficiente, y buscás validación afuera. El trabajo es silenciar esa voz y reemplazarla por una propia, amorosa.',
+    'enfermedad mental': 'Crecer con un padre con enfermedad mental es haber vivido en la imprevisibilidad. Probablemente desarrollaste una hipervigilancia —estar siempre alerta— que hoy te agota. Merecés sentirte segura sin necesitar controlar todo.',
+    adicciones: 'Los hijos de padres con adicciones suelen convertirse en "rescatadores" o en personas que toleran lo intolerable. La codependencia es la herida central. Soltar el rol de salvadora es tu mayor trabajo.',
+    abusador: 'Esta herida merece un acompañamiento especializado. Merecés sanar en un espacio seguro y contenido. Reconocer lo vivido sin justificarlo ni minimizarlo es el primer acto de justicia hacia vos misma.',
+    'no cumple': 'Cuando las promesas no se cumplen, aprendemos a no confiar. De adultas desconfiamos de los demás, anticipamos la traición, o elegimos personas que efectivamente nos fallan. La confianza se puede reconstruir, despacio.',
+    ausente: 'La ausencia deja un vacío que muchas mujeres pasan la vida intentando llenar. Lo buscan en parejas, en el trabajo, en la aprobación social. La sanación es aprender a llenar ese espacio desde adentro, siendo tu propia figura protectora.'
+  },
+  q4_1: {
+    'lo juzgo': 'El juicio es una forma de mantener distancia emocional del dolor. Mientras juzgás, no sentís el duelo de no haber tenido el padre que necesitabas. El paso siguiente es animarte a soltar el juicio y contactar con esa tristeza.',
+    'lo idealizo': 'Idealizar al padre también protege del dolor. Si era perfecto, el problema no era él... ¿entonces era vos? Soltar la idealización permite verte a vos misma con más justicia y amor.',
+    'lo ignoro': 'Ignorar es una forma válida de sobrevivir, pero no de sanar. Lo que no miramos nos sigue controlando desde adentro. Cuando estés lista, mirarlo con ojos de adulta, no de niña herida, transforma todo.',
+    'compasion parcial': 'Estar en proceso es exactamente donde tenés que estar. No hace falta llegar a un perdón forzado. La comprensión gradual, sin apuro, es la forma más honesta y duradera de sanar.',
+    paz: 'Qué hermoso que puedas estar en ese lugar. Esa paz es real y fue ganada. Usá este espacio para profundizar aún más en tu comprensión y seguir transmitiendo esa sanación a tu linaje.'
+  },
+  q5_1: {
+    'decirme palabras de aliento': '¡Poderoso compromiso! Hacelo frente al espejo, con voz firme. Al principio puede sentirse raro o falso —eso es la resistencia. Seguí igual. El cerebro necesita repetición para actualizar sus creencias.',
+    'protegerme de relaciones tóxicas': 'Protegerte es un acto de amor propio radical. Identificá qué señales ignorás cuando entrás en vínculos que te dañan, y comprometete a tomarlas en serio esta vez.',
+    'reconocer mis logros': 'Hoy mismo, al terminar este ebook, escribí 5 logros del último año. Léelos en voz alta. Sentí el orgullo. Eso que sentís es exactamente lo que tu padre ideal te daría.',
+    'poner un limite': 'Poner ese límite que venís postergando es sanar en tiempo real. Cada vez que te respetás, le enviás un mensaje a tu sistema nervioso: "estoy a salvo, me cuido".'
+  }
+};
+
+const sliderFeedbacks = {
+  1: 'Qué interesante. Tal vez la herida no se manifestó aún en tus vínculos conscientes, o quizás la negación es parte del proceso. Vale la pena seguir explorando.',
+  2: 'Algo hay, aunque quizás no lo veas del todo claro todavía. A veces la herida opera en áreas muy específicas.',
+  3: 'Hay una influencia que ya podés comenzar a ver. Observar sin juzgar es el primer paso poderoso.',
+  4: 'Empezás a notar los patrones. Eso ya es sanación.',
+  5: 'Moderadamente presente. Significa que hay trabajo por hacer y también recursos internos para hacerlo.',
+  6: 'La herida influye en tus vínculos de manera notable. Nombrarlo con honestidad es valioso.',
+  7: 'Hay una influencia significativa. Reconocerla te da poder para elegir diferente.',
+  8: 'La herida está muy presente en tus relaciones. Ese reconocimiento honesto es en sí mismo un acto de coraje.',
+  9: 'Casi omnipresente. Probablemente la sanación de esta herida sea uno de los trabajos más transformadores de tu vida.',
+  10: 'Saber esto con tanta claridad es un punto de partida poderoso. La consciencia que tenés sobre esto es exactamente lo que necesitás para empezar a sanar.'
+};
+
+function selectChoice(btn, qId, value) {
+  document.querySelectorAll(`#${qId} .choice-btn`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  autoSave(qId, value);
+  const fb = feedbacks[qId];
+  if (fb && fb[value]) {
+    const fbBox = document.getElementById(`fb_${qId}`);
+    document.getElementById(`fb_${qId}_text`).textContent = fb[value];
+    if (fbBox) { fbBox.classList.add('show'); }
+  }
+}
+
+function updateSlider(el) {
+  const v = el.value;
+  const pct = ((v - 1) / 9) * 100;
+  el.style.background = `linear-gradient(90deg, var(--rose) ${pct}%, rgba(255,255,255,0.15) ${pct}%)`;
+  const fbText = document.getElementById('fb_q2_3_text');
+  if (fbText) fbText.textContent = sliderFeedbacks[v] || '';
+}
+
+function autoSave(key, val) { saved[key] = val; }
+
+function saveAll(btn) {
+  btn.textContent = '✦ Reflexión guardada ✦';
+  btn.classList.add('saved');
+  setTimeout(() => {
+    btn.textContent = '✦ Guardar mi reflexión final';
+    btn.classList.remove('saved');
+  }, 3000);
+}
+
+function changePage(dir) {
+  const next = current + dir;
+  if (next < 1 || next > totalPages) return;
+  document.getElementById(`p${current}`).classList.remove('active');
+  current = next;
+  document.getElementById(`p${current}`).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateNav();
+}
+
+function updateNav() {
+  document.getElementById('navPages').textContent = `${current} / ${totalPages}`;
+  document.getElementById('prevBtn').disabled = current === 1;
+  document.getElementById('nextBtn').disabled = current === totalPages;
+  const pct = ((current - 1) / (totalPages - 1)) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+// init slider
+document.addEventListener('DOMContentLoaded', () => {
+  const sl = document.getElementById('q2_3');
+  if (sl) updateSlider(sl);
+  updateNav();
+});
+</script>
+</body>
+</html>
